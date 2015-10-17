@@ -1,6 +1,7 @@
 package org.eclipse.concierge.example.parking_lot.sensor;
 
 import org.eclipse.concierge.example.parking_lot.service.PanelService;
+import org.eclipse.concierge.example.parking_lot.service.PanelService.ParkingSpaceStatus;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -8,37 +9,29 @@ import org.osgi.framework.ServiceReference;
 public class Activator implements BundleActivator, SensorDelegate {
 
 	ServiceReference panelServiceReference;
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
-	 */
+	private PanelService panelService;
+	private Sensor sensor;
+	
 	public void start(BundleContext context) throws Exception {
 		panelServiceReference = context.getServiceReference(PanelService.class.getName());
-		PanelService panelService = (PanelService)context.getService(panelServiceReference);
-		panelService.updatePanelWithSensorAndStatus(10, true);
-		System.out.println("Starting");
+		panelService = (PanelService)context.getService(panelServiceReference);
+		
+		sensor = new Sensor(121, ParkingSpaceStatus.FREE, this);
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
-	 */
+
 	public void stop(BundleContext context) throws Exception {
 		context.ungetService(panelServiceReference);
-		System.out.println("Stopping");
-
 	}
 
+	// SensorDelegate
 	@Override
 	public void sensorStatusDidChange(int id, ParkingSpaceStatus status) {
-		// TODO Auto-generated method stub
-		
+		panelService.updatePanelWithSensorAndStatus(id, status);		
 	}
 
 	@Override
 	public void sensorStatusTimeToUpdate(int id, ParkingSpaceStatus status) {
-		// TODO Auto-generated method stub
-		
+		panelService.updatePanelWithSensorAndStatus(id, status);		
 	}
 
 }

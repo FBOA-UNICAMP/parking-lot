@@ -5,18 +5,19 @@ import java.awt.event.ActionListener;
 import java.util.Random;
 
 import javax.swing.Timer;
+import org.eclipse.concierge.example.parking_lot.service.PanelService.ParkingSpaceStatus;
 
 public class Sensor implements ActionListener {
+	
 	private int id;
 	private ParkingSpaceStatus status;
 	private SensorDelegate delegate;
-	
 	private int minTime = 1000;
 	private int maxTime = 30000;
 	Random rand;
 	Timer T1;
 	
-	public Sensor(){
+	public Sensor() {
 		rand = new Random();
 		T1 = new Timer(minTime + rand.nextInt(maxTime-minTime+1), this);
 		status = ParkingSpaceStatus.FREE;
@@ -29,7 +30,6 @@ public class Sensor implements ActionListener {
 		this.delegate = delegate;
 		rand = new Random();
 		T1 = new Timer(minTime + rand.nextInt(maxTime-minTime+1), this);
-		status = ParkingSpaceStatus.FREE;
 		T1.start();
 	}
 	
@@ -64,10 +64,6 @@ public class Sensor implements ActionListener {
 		T1.setDelay(minTime + rand.nextInt(maxTime-minTime+1));
 		T1.restart();
 	}
-}
-
-enum ParkingSpaceStatus {
-    FREE, BUSY;
 }
 
 interface SensorDelegate {
