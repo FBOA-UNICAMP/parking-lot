@@ -10,7 +10,7 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
-		System.out.println("Sensor Start Message");
+		System.out.println("Message1");
 	}
 	
 	/*
