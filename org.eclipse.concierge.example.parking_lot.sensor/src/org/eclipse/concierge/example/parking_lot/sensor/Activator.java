@@ -10,7 +10,7 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
-		System.out.println("Message1");
+		System.out.println("Message1111");
 	}
 	
 	/*
@@ -18,7 +18,7 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		System.out.println("Message 222222");
+		System.out.println("Message 2222222222222222222");
 	}
 
 }
