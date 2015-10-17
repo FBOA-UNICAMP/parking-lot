@@ -5,7 +5,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
-public class Activator implements BundleActivator {
+public class Activator implements BundleActivator, SensorDelegate {
 
 	ServiceReference panelServiceReference;
 	/*
@@ -27,6 +27,18 @@ public class Activator implements BundleActivator {
 		context.ungetService(panelServiceReference);
 		System.out.println("Stopping");
 
+	}
+
+	@Override
+	public void sensorStatusDidChange(int id, ParkingSpaceStatus status) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sensorStatusTimeToUpdate(int id, ParkingSpaceStatus status) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
