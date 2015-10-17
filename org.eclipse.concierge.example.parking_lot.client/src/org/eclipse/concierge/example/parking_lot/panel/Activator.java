@@ -1,4 +1,4 @@
-package org.eclipse.concierge.example.parking_lot.client;
+package org.eclipse.concierge.example.parking_lot.panel;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
