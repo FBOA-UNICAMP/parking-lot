@@ -1,4 +1,4 @@
-package org.eclipse.concierge.example.parking_lot.sensor;
+package org.eclipse.concierge.example.parking_lot.sensor.impl;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,7 +11,7 @@ public class Sensor {
 	
 	private int id;
 	private ParkingSpaceStatus status;
-	private SensorDelegate delegate;
+	private SensorMonitoringInterface monitorer;
 	private int minTime = 500;
 	private int maxTime = 30000;
 	private int fixedTime = 10000;
@@ -26,7 +26,7 @@ public class Sensor {
 			if(status == ParkingSpaceStatus.FREE)
 				status = ParkingSpaceStatus.BUSY;
 			else status = ParkingSpaceStatus.FREE;
-			delegate.sensorStatusDidChange(id, status);
+			monitorer.sensorStatusDidChange(id, status);
 			T1.stop();
 			int randTime = minTime + rand.nextInt(maxTime-minTime+1);
 			T1.setInitialDelay(randTime);
@@ -40,7 +40,7 @@ public class Sensor {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			delegate.sensorStatusDidChange(id, status);
+			monitorer.sensorStatusDidChange(id, status);
 		}
 		
 	}
@@ -56,10 +56,10 @@ public class Sensor {
 		T2.start();
 	}
 	
-	public Sensor(int id, ParkingSpaceStatus status, SensorDelegate delegate){
+	public Sensor(int id, ParkingSpaceStatus status, SensorMonitoringInterface monitorer){
 		this.id = id;
 		this.status = status;
-		this.delegate = delegate;
+		this.monitorer = monitorer;
 		rand = new Random();
 		int randTime = minTime + rand.nextInt(maxTime-minTime+1);
 		T1 = new Timer(randTime, new ListenerT1());
@@ -82,16 +82,12 @@ public class Sensor {
 		this.id = id;
 	}
 	
-	public SensorDelegate getDelegate() {
-		return delegate;
-	}
-	public void setDelegate(SensorDelegate delegate) {
-		this.delegate = delegate;
+	public SensorMonitoringInterface getMonitorer() {
+		return monitorer;
 	}
 
-}
+	public void setMonitorer(SensorMonitoringInterface monitorer) {
+		this.monitorer = monitorer;
+	}
 
-interface SensorDelegate {
-	public void sensorStatusDidChange(int id, ParkingSpaceStatus status);
-	public void sensorStatusTimeToUpdate(int id, ParkingSpaceStatus status);
 }
