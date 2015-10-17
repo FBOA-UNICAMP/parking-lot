@@ -6,4 +6,4 @@ Bundle-Version: 0.1.0
 Bundle-Activator: org.eclipse.concierge.example.parking_lot.panel.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.osgi.framework;version="1.3.0"
-Export-Package: org.eclipse.concierge.example.parking_lot.panel.service
+Export-Package: org.eclipse.concierge.example.parking_lot.service
