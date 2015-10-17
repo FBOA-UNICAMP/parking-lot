@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Client
-Bundle-SymbolicName: org.eclipse.concierge.example.parking_lot.client
+Bundle-SymbolicName: org.eclipse.concierge.example.parking_lot.panel
 Bundle-Version: 0.1.0
 Bundle-Activator: org.eclipse.concierge.example.parking_lot.client.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
