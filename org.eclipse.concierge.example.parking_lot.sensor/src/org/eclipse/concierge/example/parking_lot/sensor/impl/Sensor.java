@@ -6,13 +6,9 @@ import java.util.Random;
 
 import javax.swing.Timer;
 
+import org.eclipse.concierge.example.parking_lot.sensor.monitor.service.SensorMonitorServiceMonitorerInterface.SensorStatus;
+
 public class Sensor {
-	
-	public enum SensorStatus {
-	    FREE,
-	    BUSY,
-	    UNKNOWN;
-	}
 	
 	private int id;
 	private boolean active;

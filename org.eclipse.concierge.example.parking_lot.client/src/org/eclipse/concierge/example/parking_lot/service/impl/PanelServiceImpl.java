@@ -4,9 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import org.eclipse.concierge.example.parking_lot.sensor.impl.Sensor.SensorStatus;
 import org.eclipse.concierge.example.parking_lot.service.PanelService;
-import org.eclipse.concierge.example.parking_lot.service.PanelService.ParkingSpaceStatus;
 
 public class PanelServiceImpl implements PanelService {
 	DateFormat dateFormat;

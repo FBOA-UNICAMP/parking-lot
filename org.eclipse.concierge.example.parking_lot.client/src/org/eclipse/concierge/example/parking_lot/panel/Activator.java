@@ -1,23 +1,36 @@
 package org.eclipse.concierge.example.parking_lot.panel;
 
-import org.eclipse.concierge.example.parking_lot.service.PanelService;
-import org.eclipse.concierge.example.parking_lot.service.impl.PanelServiceImpl;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import org.eclipse.concierge.example.parking_lot.sensor.monitor.service.SensorMonitorService;
+import org.eclipse.concierge.example.parking_lot.sensor.monitor.service.SensorMonitorServiceMonitorerInterface;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
 
-public class Activator implements BundleActivator {
+public class Activator implements BundleActivator, SensorMonitorServiceMonitorerInterface {
 	
-	ServiceRegistration panelServiceRegistration;
+	SensorMonitorServiceTracker sensorMonitorServiceTracker;
+	SensorMonitorService sensorMonitorService;
 	
+	DateFormat dateFormat;
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
-		PanelService panelService = new PanelServiceImpl();
-		panelServiceRegistration = context.registerService(PanelService.class.getName(), panelService, null);
-		System.out.println("Panel service started");
+		
+		dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		
+		System.out.println("Panel service started. Tracking For SensorMonitorServices.");
+		
+		sensorMonitorServiceTracker = new SensorMonitorServiceTracker(context);
+		sensorMonitorServiceTracker.open();
+        sensorMonitorService = (SensorMonitorService)sensorMonitorServiceTracker.getService();
+		sensorMonitorService.setSensorMonitorServiceMonitorer(this);
+        
 	}
 	
 	/*
@@ -25,8 +38,19 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		panelServiceRegistration.unregister();
-		System.out.println("Panel service stopped");
+		System.out.println("Stopping Panel...");
+		
+		sensorMonitorService.unsetSensorMonitorServiceMonitorer(this);
+		sensorMonitorServiceTracker.close();
+		
+		System.out.println("Panel Stopped");
+	}
+
+	// SensorMonitorServiceMonitorerInterface Implementation
+	
+	public void sensorMonitorServiceDidUpdate(int sensorId, SensorStatus status) {
+		Calendar cal = Calendar.getInstance();
+		System.out.println(dateFormat.format(cal.getTime()) + ": Sensor[" + sensorId + "]'s status: " + status.toString());
 	}
 
 }

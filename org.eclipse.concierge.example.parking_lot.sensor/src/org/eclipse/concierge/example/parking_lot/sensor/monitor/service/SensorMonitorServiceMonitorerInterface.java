@@ -1,9 +1,12 @@
 package org.eclipse.concierge.example.parking_lot.sensor.monitor.service;
 
-import org.eclipse.concierge.example.parking_lot.sensor.impl.Sensor.SensorStatus;
-
-
 public interface SensorMonitorServiceMonitorerInterface {
+	
+	public enum SensorStatus {
+	    FREE,
+	    BUSY,
+	    UNKNOWN;
+	}
 	
 	public void sensorMonitorServiceDidUpdate(int sensorId, SensorStatus status);
 	
