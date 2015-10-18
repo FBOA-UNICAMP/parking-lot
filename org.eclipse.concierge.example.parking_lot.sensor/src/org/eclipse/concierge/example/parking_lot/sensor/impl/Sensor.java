@@ -30,12 +30,14 @@ public class Sensor {
 	
 	private class ListenerT1 implements ActionListener {
 
+		private Sensor sensor;
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(status == SensorStatus.FREE)
 				status = SensorStatus.BUSY;
 			else status = SensorStatus.FREE;
-			monitorer.sensorStatusDidChange(id, status);
+			monitorer.sensorStatusDidChange(this.getSensor());
 			T1.stop();
 			int randTime = minTime + rand.nextInt(maxTime-minTime+1);
 			T1.setInitialDelay(randTime);
@@ -43,26 +45,39 @@ public class Sensor {
 			T1.restart();
 			T2.restart();
 		}
+
+		public Sensor getSensor() {
+			return sensor;
+		}
+
+		public void setSensor(Sensor sensor) {
+			this.sensor = sensor;
+		}
 	}
 	
 	private class ListenerT2 implements ActionListener {
 
+		Sensor sensor;
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			monitorer.sensorStatusDidChange(id, status);
+			monitorer.sensorStatusDidChange(this.getSensor());
 		}
 		
+		public Sensor getSensor() {
+			return sensor;
+		}
+
+		public void setSensor(Sensor sensor) {
+			this.sensor = sensor;
+		}
 	}
 	
 	public Sensor(){
 		rand = new Random();
 		int randTime = minTime + rand.nextInt(maxTime-minTime+1);
 		System.out.println(randTime);
-		T1 = new Timer(randTime, new ListenerT1());
-		T2 = new Timer(fixedTime, new ListenerT2());
-		status = SensorStatus.FREE;
-		T1.start();
-		T2.start();
+		this.setupTimers(randTime);
 	}
 	
 	public Sensor(int id, SensorStatus status, SensorMonitoringInterface monitorer){
@@ -71,8 +86,17 @@ public class Sensor {
 		this.monitorer = monitorer;
 		rand = new Random();
 		int randTime = minTime + rand.nextInt(maxTime-minTime+1);
-		T1 = new Timer(randTime, new ListenerT1());
-		T2 = new Timer(fixedTime, new ListenerT2());
+		this.setupTimers(randTime);
+	}
+	
+	private void setupTimers(int randTime) {
+		ListenerT1 listnerT1 = new ListenerT1();
+		listnerT1.setSensor(this);
+		ListenerT2 listnerT2 = new ListenerT2();
+		listnerT2.setSensor(this);
+		T1 = new Timer(randTime, listnerT1);
+		T2 = new Timer(fixedTime, listnerT2);
+		status = SensorStatus.FREE;
 		T1.start();
 		T2.start();
 	}
@@ -80,11 +104,12 @@ public class Sensor {
 	// Public Methods
 	
 	public void activate() {
-		
+		active = true;
 	}
 	
 	public void shutDown() {
-		
+		active = false;
+		// pause stuff
 	}
 	
 	
@@ -109,6 +134,14 @@ public class Sensor {
 		this.id = id;
 	}
 	
+	public SensorStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(SensorStatus status) {
+		this.status = status;
+	}
+
 	public SensorMonitoringInterface getMonitorer() {
 		return monitorer;
 	}
