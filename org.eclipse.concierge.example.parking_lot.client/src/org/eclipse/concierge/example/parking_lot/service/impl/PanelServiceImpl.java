@@ -18,3 +18,26 @@ public class PanelServiceImpl implements PanelService {
 		System.out.println(dateFormat.format(cal.getTime()) + ": Sensor[" + sensorId + "]'s status: " + status.toString());	
 	}
 }
+
+
+
+//private ParkingSpaceStatus parkingSpaceStatusForSensorStatus(SensorStatus sensorStatus) {
+//	
+//	ParkingSpaceStatus parkingSpaceStatus;
+//	
+//	switch (sensorStatus) {
+//		case FREE: 
+//			parkingSpaceStatus = ParkingSpaceStatus.AVAILABLE;
+//			break;
+//		case BUSY:
+//			parkingSpaceStatus =  ParkingSpaceStatus.OCCUPIED;
+//			break;
+//		case UNKNOWN:
+//		default:
+//			parkingSpaceStatus = ParkingSpaceStatus.UNKNOWN;
+//			break;
+//	}
+//		
+//	return parkingSpaceStatus;
+//	
+//}

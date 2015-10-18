@@ -1,20 +1,20 @@
 package org.eclipse.concierge.example.parking_lot.sensor.impl;
 
-import org.eclipse.concierge.example.parking_lot.service.PanelService;
-import org.eclipse.concierge.example.parking_lot.service.PanelService.ParkingSpaceStatus;
+import org.eclipse.concierge.example.parking_lot.sensor.monitor.service.SensorMonitorService;
+import org.eclipse.concierge.example.parking_lot.sensor.monitor.service.SensorMonitorServiceMonitorerInterface;
 
-import org.eclipse.concierge.example.parking_lot.sensor.impl.Sensor.SensorStatus;
+public class SensorAdmin implements SensorMonitoringInterface, SensorMonitorService {
 
-public class SensorAdmin implements SensorMonitoringInterface {
-
-	private PanelService panelService;
 	private Sensor managedSensor;
+	private boolean paused;
+	
+	private SensorMonitorServiceMonitorerInterface monitorServiceMonitorer;
 	
 	// SensorAdmin Constructor
 	
-	public SensorAdmin(PanelService panelService) {
+	public SensorAdmin(Sensor sensor) {
 		super();
-		this.panelService = panelService;
+		this.manageSensor(sensor);
 	}
 	
 	// SensorAdmin Public Methods
@@ -46,38 +46,53 @@ public class SensorAdmin implements SensorMonitoringInterface {
 		
 	}
 	
-	// Sensor Interface Implementation
+	public boolean isPaused() {
+		return paused;
+	}
+
+	public void setPaused(boolean paused) {
+		this.paused = paused;
+		if (paused) {
+			managedSensor.shutDown();
+		} else {
+			managedSensor.activate();
+		}
+	}
 	
-	public void sensorStatusDidChange(int id, SensorStatus status) {
+	// Sensor Interface Implementation - Internal Bundle Monitoring
+	
+	public void sensorStatusDidChange(Sensor sensor) {
 		
-		panelService.updatePanelWithSensorAndStatus(id, this.parkingSpaceStatusForSensorStatus(status));		
+		this.updateSensorMonitorServiceMonitorer(sensor);		
 		
 	}
 
-	public void sensorStatusTimeToUpdate(int id, SensorStatus status) {
+	public void sensorStatusTimeToUpdate(Sensor sensor) {
 		
-		panelService.updatePanelWithSensorAndStatus(id, this.parkingSpaceStatusForSensorStatus(status));	
+		this.updateSensorMonitorServiceMonitorer(sensor);	
 		
 	}
 	
-	private ParkingSpaceStatus parkingSpaceStatusForSensorStatus(SensorStatus sensorStatus) {
+	private void updateSensorMonitorServiceMonitorer(Sensor sensor) {
 		
-		ParkingSpaceStatus parkingSpaceStatus;
-		
-		switch (sensorStatus) {
-			case FREE: 
-				parkingSpaceStatus = ParkingSpaceStatus.AVAILABLE;
-				break;
-			case BUSY:
-				parkingSpaceStatus =  ParkingSpaceStatus.OCCUPIED;
-				break;
-			case UNKNOWN:
-			default:
-				parkingSpaceStatus = ParkingSpaceStatus.UNKNOWN;
-				break;
+		if (monitorServiceMonitorer != null) {
+			monitorServiceMonitorer.sensorMonitorServiceDidUpdate(sensor.getId(), sensor.getStatus());
 		}
-			
-		return parkingSpaceStatus;
+		
+	}
+	
+	
+	// Sensor Monitor Service Implementation
+	
+	public void setSensorMonitorServiceMonitorer(SensorMonitorServiceMonitorerInterface sensorServiceMonitorer) {
+		
+		monitorServiceMonitorer = sensorServiceMonitorer;
+		
+	}
+
+	public void unsetSensorMonitorServiceMonitorer(SensorMonitorServiceMonitorerInterface sensorServiceMonitorer) {
+		
+		monitorServiceMonitorer = null;
 		
 	}
 	
