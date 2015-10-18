@@ -3,6 +3,8 @@ package org.eclipse.concierge.example.parking_lot.sensor.impl;
 import org.eclipse.concierge.example.parking_lot.service.PanelService;
 import org.eclipse.concierge.example.parking_lot.service.PanelService.ParkingSpaceStatus;
 
+import org.eclipse.concierge.example.parking_lot.sensor.impl.Sensor.SensorStatus;
+
 public class SensorAdmin implements SensorMonitoringInterface {
 
 	private PanelService panelService;
@@ -46,15 +48,36 @@ public class SensorAdmin implements SensorMonitoringInterface {
 	
 	// Sensor Interface Implementation
 	
-	public void sensorStatusDidChange(int id, ParkingSpaceStatus status) {
+	public void sensorStatusDidChange(int id, SensorStatus status) {
 		
-		panelService.updatePanelWithSensorAndStatus(id, status);		
+		panelService.updatePanelWithSensorAndStatus(id, this.parkingSpaceStatusForSensorStatus(status));		
 		
 	}
 
-	public void sensorStatusTimeToUpdate(int id, ParkingSpaceStatus status) {
+	public void sensorStatusTimeToUpdate(int id, SensorStatus status) {
 		
-		panelService.updatePanelWithSensorAndStatus(id, status);	
+		panelService.updatePanelWithSensorAndStatus(id, this.parkingSpaceStatusForSensorStatus(status));	
+		
+	}
+	
+	private ParkingSpaceStatus parkingSpaceStatusForSensorStatus(SensorStatus sensorStatus) {
+		
+		ParkingSpaceStatus parkingSpaceStatus;
+		
+		switch (sensorStatus) {
+			case FREE: 
+				parkingSpaceStatus = ParkingSpaceStatus.AVAILABLE;
+				break;
+			case BUSY:
+				parkingSpaceStatus =  ParkingSpaceStatus.OCCUPIED;
+				break;
+			case UNKNOWN:
+			default:
+				parkingSpaceStatus = ParkingSpaceStatus.UNKNOWN;
+				break;
+		}
+			
+		return parkingSpaceStatus;
 		
 	}
 	
