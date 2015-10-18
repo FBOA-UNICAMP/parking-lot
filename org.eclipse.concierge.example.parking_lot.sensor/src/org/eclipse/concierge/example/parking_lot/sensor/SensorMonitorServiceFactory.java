@@ -17,7 +17,6 @@ public class SensorMonitorServiceFactory implements ServiceFactory {
     	if (sensorAdmin == null) {
     		sensor = new Sensor();
         	sensorAdmin = new SensorAdmin(sensor);
-        	sensorAdmin.manageSensor(sensor);
         	System.out.println("Create object of SensorAdmin for " + bundle.getSymbolicName());
     	} else {
     		System.out.println("Returning created object of SensorAdmin for " + bundle.getSymbolicName());
