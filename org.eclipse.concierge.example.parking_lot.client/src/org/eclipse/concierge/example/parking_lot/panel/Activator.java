@@ -4,10 +4,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import org.eclipse.concierge.example.parking_lot.sensor.monitor.service.SensorMonitorService;
-import org.eclipse.concierge.example.parking_lot.sensor.monitor.service.SensorMonitorServiceMonitorerInterface;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+
+import org.eclipse.concierge.example.parking_lot.sensor.monitor.service.SensorMonitorService;
+import org.eclipse.concierge.example.parking_lot.sensor.monitor.service.SensorMonitorServiceMonitorerInterface;
+import org.eclipse.concierge.example.parking_lot.sensor.state.SensorState;
 
 public class Activator implements BundleActivator, SensorMonitorServiceMonitorerInterface {
 	
@@ -48,7 +50,7 @@ public class Activator implements BundleActivator, SensorMonitorServiceMonitorer
 
 	// SensorMonitorServiceMonitorerInterface Implementation
 	
-	public void sensorMonitorServiceDidUpdate(int sensorId, SensorStatus status) {
+	public void sensorMonitorServiceDidUpdate(int sensorId, SensorState status) {
 		Calendar cal = Calendar.getInstance();
 		System.out.println(dateFormat.format(cal.getTime()) + ": Sensor[" + sensorId + "]'s status: " + status.toString());
 	}

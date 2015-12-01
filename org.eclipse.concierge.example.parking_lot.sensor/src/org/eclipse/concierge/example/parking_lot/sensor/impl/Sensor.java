@@ -6,7 +6,7 @@ import java.util.Random;
 
 import javax.swing.Timer;
 
-import org.eclipse.concierge.example.parking_lot.sensor.monitor.service.SensorMonitorServiceMonitorerInterface.SensorStatus;
+import org.eclipse.concierge.example.parking_lot.sensor.state.SensorState;
 
 public class Sensor {
 	
@@ -14,7 +14,7 @@ public class Sensor {
 	private boolean active;
 	private boolean broadcast;
 	private int broadcastPeriod;
-	private SensorStatus status;
+	private SensorState status;
 	private SensorMonitoringInterface monitorer;
 	
 	private int minTime = 500;
@@ -30,9 +30,9 @@ public class Sensor {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(status == SensorStatus.FREE)
-				status = SensorStatus.BUSY;
-			else status = SensorStatus.FREE;
+			if(status == SensorState.FREE)
+				status = SensorState.BUSY;
+			else status = SensorState.FREE;
 			monitorer.sensorStatusDidChange(this.getSensor());
 			T1.stop();
 			int randTime = minTime + rand.nextInt(maxTime-minTime+1);
@@ -76,7 +76,7 @@ public class Sensor {
 		this.setupTimers(randTime);
 	}
 	
-	public Sensor(int id, SensorStatus status, SensorMonitoringInterface monitorer){
+	public Sensor(int id, SensorState status, SensorMonitoringInterface monitorer){
 		this.id = id;
 		this.status = status;
 		this.monitorer = monitorer;
@@ -92,7 +92,7 @@ public class Sensor {
 		listnerT2.setSensor(this);
 		T1 = new Timer(randTime, listnerT1);
 		T2 = new Timer(fixedTime, listnerT2);
-		status = SensorStatus.FREE;
+		status = SensorState.FREE;
 		T1.start();
 		T2.start();
 	}
@@ -130,11 +130,11 @@ public class Sensor {
 		this.id = id;
 	}
 	
-	public SensorStatus getStatus() {
+	public SensorState getStatus() {
 		return status;
 	}
 
-	public void setStatus(SensorStatus status) {
+	public void setStatus(SensorState status) {
 		this.status = status;
 	}
 

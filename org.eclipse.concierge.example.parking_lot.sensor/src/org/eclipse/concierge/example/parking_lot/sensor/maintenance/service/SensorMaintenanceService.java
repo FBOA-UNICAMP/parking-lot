@@ -10,7 +10,6 @@ public interface SensorMaintenanceService {
 	public void setStatusBroadcastPeriod(int period);
 	public int getStatusBroadcastPeriod();
 	
-	public void setSimulation(boolean simulate);
-	public boolean isSimulating();
+	
 	
 }
