@@ -11,19 +11,19 @@ import org.eclipse.concierge.example.parking_lot.sensor.monitor.service.SensorMo
 import org.eclipse.concierge.example.parking_lot.sensor.monitor.service.SensorMonitorServiceMonitorerInterface;
 import org.eclipse.concierge.example.parking_lot.sensor.state.SensorState;
 
-public class Activator implements BundleActivator, SensorMonitorServiceMonitorerInterface {
+public class Activator implements BundleActivator {
 	
 	SensorMonitorServiceTracker sensorMonitorServiceTracker;
 	SensorMonitorService sensorMonitorService;
-	
 	DateFormat dateFormat;
+	Panel panel;
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
-		
+		panel = new Panel();
 		dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		
 		System.out.println("Panel service started. Tracking For SensorMonitorServices.");
@@ -31,7 +31,7 @@ public class Activator implements BundleActivator, SensorMonitorServiceMonitorer
 		sensorMonitorServiceTracker = new SensorMonitorServiceTracker(context);
 		sensorMonitorServiceTracker.open();
         sensorMonitorService = (SensorMonitorService)sensorMonitorServiceTracker.getService();
-		sensorMonitorService.setSensorMonitorServiceMonitorer(this);
+		sensorMonitorService.setSensorMonitorServiceMonitorer(panel);
         
 	}
 	
@@ -42,17 +42,13 @@ public class Activator implements BundleActivator, SensorMonitorServiceMonitorer
 	public void stop(BundleContext context) throws Exception {
 		System.out.println("Stopping Panel...");
 		
-		sensorMonitorService.unsetSensorMonitorServiceMonitorer(this);
+		sensorMonitorService.unsetSensorMonitorServiceMonitorer(panel);
 		sensorMonitorServiceTracker.close();
 		
 		System.out.println("Panel Stopped");
 	}
 
-	// SensorMonitorServiceMonitorerInterface Implementation
 	
-	public void sensorMonitorServiceDidUpdate(int sensorId, SensorState status) {
-		Calendar cal = Calendar.getInstance();
-		System.out.println(dateFormat.format(cal.getTime()) + ": Sensor[" + sensorId + "]'s status: " + status.toString());
-	}
+	
 
 }
