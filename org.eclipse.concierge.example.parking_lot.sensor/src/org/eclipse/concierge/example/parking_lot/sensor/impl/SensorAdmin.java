@@ -62,9 +62,7 @@ public class SensorAdmin implements SensorMonitoringInterface, SensorMonitorServ
 	// Sensor Interface Implementation - Internal Bundle Monitoring
 	
 	public void sensorStatusDidChange(Sensor sensor) {
-		
 		this.updateSensorMonitorServiceMonitorer(sensor);		
-		
 	}
 
 	public void sensorStatusTimeToUpdate(Sensor sensor) {
