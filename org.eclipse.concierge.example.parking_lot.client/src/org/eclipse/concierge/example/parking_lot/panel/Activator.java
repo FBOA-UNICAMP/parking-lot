@@ -2,14 +2,14 @@ package org.eclipse.concierge.example.parking_lot.panel;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+//import java.util.Calendar;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import org.eclipse.concierge.example.parking_lot.sensor.monitor.service.SensorMonitorService;
-import org.eclipse.concierge.example.parking_lot.sensor.monitor.service.SensorMonitorServiceMonitorerInterface;
-import org.eclipse.concierge.example.parking_lot.sensor.state.SensorState;
+//import org.eclipse.concierge.example.parking_lot.sensor.monitor.service.SensorMonitorServiceMonitorerInterface;
+//import org.eclipse.concierge.example.parking_lot.sensor.state.SensorState;
 
 public class Activator implements BundleActivator {
 	
@@ -28,10 +28,10 @@ public class Activator implements BundleActivator {
 		
 		System.out.println("Panel service started. Tracking For SensorMonitorServices.");
 		
-		sensorMonitorServiceTracker = new SensorMonitorServiceTracker(context);
+		sensorMonitorServiceTracker = new SensorMonitorServiceTracker(context, panel);
+		
+		System.out.println("Oppenning Service Tracker");
 		sensorMonitorServiceTracker.open();
-        sensorMonitorService = (SensorMonitorService)sensorMonitorServiceTracker.getService();
-		sensorMonitorService.setSensorMonitorServiceMonitorer(panel);
         
 	}
 	
@@ -42,9 +42,7 @@ public class Activator implements BundleActivator {
 	public void stop(BundleContext context) throws Exception {
 		System.out.println("Stopping Panel...");
 		
-		sensorMonitorService.unsetSensorMonitorServiceMonitorer(panel);
-		sensorMonitorServiceTracker.close();
-		
+		sensorMonitorServiceTracker.shutdown();
 		System.out.println("Panel Stopped");
 	}
 

@@ -13,8 +13,8 @@ public class SensorAdmin implements SensorMonitoringInterface, SensorMonitorServ
 	// SensorAdmin Constructor
 	
 	public SensorAdmin(Sensor sensor) {
-		super();
 		this.manageSensor(sensor);
+		this.setPaused(true);
 	}
 	
 	// SensorAdmin Public Methods
@@ -53,16 +53,18 @@ public class SensorAdmin implements SensorMonitoringInterface, SensorMonitorServ
 	public void setPaused(boolean paused) {
 		this.paused = paused;
 		if (paused) {
-			managedSensor.shutDown();
+			managedSensor.pauseBroadcast();
 		} else {
-			managedSensor.activate();
+			managedSensor.startBroadcast();
 		}
 	}
 	
 	// Sensor Interface Implementation - Internal Bundle Monitoring
 	
 	public void sensorStatusDidChange(Sensor sensor) {
+		
 		this.updateSensorMonitorServiceMonitorer(sensor);		
+		
 	}
 
 	public void sensorStatusTimeToUpdate(Sensor sensor) {
@@ -81,6 +83,12 @@ public class SensorAdmin implements SensorMonitoringInterface, SensorMonitorServ
 	
 	
 	// Sensor Monitor Service Implementation
+	
+	public void test() {
+		
+		System.out.println("Sensor Test Method!");
+		
+	}
 	
 	public void setSensorMonitorServiceMonitorer(SensorMonitorServiceMonitorerInterface sensorServiceMonitorer) {
 		
