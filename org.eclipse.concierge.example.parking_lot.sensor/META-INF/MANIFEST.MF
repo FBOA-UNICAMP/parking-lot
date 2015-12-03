@@ -4,7 +4,7 @@ Bundle-Name: Sensor
 Bundle-SymbolicName: org.eclipse.concierge.example.parking_lot.sensor
 Bundle-Version: 0.1.0
 Bundle-Activator: org.eclipse.concierge.example.parking_lot.sensor.Activator
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.concierge.example.parking_lot.sensor.monitor.service,
  org.eclipse.concierge.example.parking_lot.sensor.maintenance.service,
  org.eclipse.concierge.example.parking_lot.sensor.state

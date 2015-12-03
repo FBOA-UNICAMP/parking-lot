@@ -14,16 +14,21 @@ public class SensorMonitorServiceFactory implements ServiceFactory {
 	
     public Object getService(Bundle bundle, ServiceRegistration registration) {
         
+    	System.out.println("Sensor Factory Get Service");
+    	
     	if (sensorAdmin == null) {
-    		sensor = new Sensor();
+    		System.out.println("SensorFactory Will Create Sensor");
+    		sensor = new Sensor(5);
+    		System.out.println("SensorFatory Did Create Sensor " + sensor);
         	sensorAdmin = new SensorAdmin(sensor);
         	System.out.println("Create object of SensorAdmin for " + bundle.getSymbolicName());
     	} else {
     		System.out.println("Returning created object of SensorAdmin for " + bundle.getSymbolicName());
-    		if (sensorAdmin.isPaused()) {
-    			sensorAdmin.setPaused(false);
-    		}
     	}
+    	
+    	if (sensorAdmin.isPaused()) {
+			sensorAdmin.setPaused(false);
+		}
     	
     	referenceCounter++;
     	System.out.println("Number of bundles using service " + referenceCounter);
@@ -41,4 +46,12 @@ public class SensorMonitorServiceFactory implements ServiceFactory {
         	sensorAdmin.setPaused(true);
         }
     }
+    
+    public void shutdown() {
+    	
+    	sensorAdmin.setPaused(true);
+    	sensorAdmin = null;
+    	
+    }
+    
 }

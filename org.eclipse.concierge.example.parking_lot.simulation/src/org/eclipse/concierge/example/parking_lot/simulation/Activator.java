@@ -6,7 +6,8 @@ import org.osgi.framework.BundleContext;
 public class Activator implements BundleActivator {
 
 	private static BundleContext context;
-
+	private TimerDemo timerDemo;
+	
 	static BundleContext getContext() {
 		return context;
 	}
@@ -17,6 +18,13 @@ public class Activator implements BundleActivator {
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
+		this.timerDemo = new TimerDemo();
+		try {
+			this.timerDemo.startTimer();
+		} catch (Exception e) {
+			System.out.println("Exception " + e);
+		}
+		
 	}
 
 	/*
@@ -25,6 +33,8 @@ public class Activator implements BundleActivator {
 	 */
 	public void stop(BundleContext bundleContext) throws Exception {
 		Activator.context = null;
+		this.timerDemo.stopTimer();
+		this.timerDemo = null;
 	}
 
 }
