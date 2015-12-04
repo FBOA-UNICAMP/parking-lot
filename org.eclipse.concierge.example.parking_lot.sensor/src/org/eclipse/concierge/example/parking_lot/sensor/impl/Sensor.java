@@ -77,7 +77,7 @@ public class Sensor {
 		
 		this.id = id;
 		this.broadcastPeriod = 5; // Seconds
-		this.status = SensorState.FREE;
+		this.status = SensorState.UNKNOWN;
 		broadcastTimer = null;
 		stateChangeTimer = null;
 		
