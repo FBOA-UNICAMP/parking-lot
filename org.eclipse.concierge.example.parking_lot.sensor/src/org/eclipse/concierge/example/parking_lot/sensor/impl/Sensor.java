@@ -115,7 +115,7 @@ public class Sensor {
 	}
 	
 	private void broadcastState() {
-		System.out.println("Sensor (" + this.id +") Broadcast State: " + this.status);
+//		System.out.println("Sensor (" + this.id +") Broadcast State: " + this.status);
 		monitorer.sensorStatusTimeToUpdate(this);
 	}
 	
@@ -126,7 +126,7 @@ public class Sensor {
 	class BroadcastTask extends TimerTask {
 		Sensor sensor;
 		public void run() {
-			System.out.format("Timer Event\n");
+//			System.out.format("Timer Event\n");
 			this.sensor.broadcastState();
 		}
 		// Sensor Getters & Setter
@@ -195,6 +195,7 @@ public class Sensor {
 
 	public void setStatus(SensorState status) {
 		this.status = status;
+		monitorer.sensorStatusDidChange(this);
 	}
 
 	public SensorMonitoringInterface getMonitorer() {

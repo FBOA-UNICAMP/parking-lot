@@ -2,8 +2,10 @@ package org.eclipse.concierge.example.parking_lot.sensor.impl;
 
 import org.eclipse.concierge.example.parking_lot.sensor.monitor.service.SensorMonitorService;
 import org.eclipse.concierge.example.parking_lot.sensor.monitor.service.SensorMonitorServiceMonitorerInterface;
+import org.eclipse.concierge.example.parking_lot.sensor.state.SensorState;
+import org.eclipse.concierge.shell.commands.ShellCommandGroup;
 
-public class SensorAdmin implements SensorMonitoringInterface, SensorMonitorService {
+public class SensorAdmin implements SensorMonitoringInterface, SensorMonitorService, ShellCommandGroup {
 
 	private Sensor managedSensor;
 	private boolean paused;
@@ -13,8 +15,10 @@ public class SensorAdmin implements SensorMonitoringInterface, SensorMonitorServ
 	// SensorAdmin Constructor
 	
 	public SensorAdmin(Sensor sensor) {
+		System.out.println("Inside SensorAdmin");
 		this.manageSensor(sensor);
 		this.setPaused(true);
+		System.out.println("Leaving SensorAdmin");
 	}
 	
 	// SensorAdmin Public Methods
@@ -100,6 +104,26 @@ public class SensorAdmin implements SensorMonitoringInterface, SensorMonitorServ
 		
 		monitorServiceMonitorer = null;
 		
+	}
+
+	public String getHelp() {
+		return "Sensor Commands:\n\tsensor.busy\n\tsensor.free\n\tsensor.unknown\n";
+	}
+
+	public String getGroup() {
+		return "sensor";
+	}
+
+	public void handleCommand(String command, String[] args) throws Exception {
+		if ("free".equals(command)) {
+			managedSensor.setStatus(SensorState.FREE);
+		} else if ("busy".equals(command)) {
+			managedSensor.setStatus(SensorState.BUSY);
+		} else if ("unknown".equals(command)) {
+			managedSensor.setStatus(SensorState.UNKNOWN);
+		} else {
+			System.out.println("unknown command " + command);
+		}
 	}
 	
 }

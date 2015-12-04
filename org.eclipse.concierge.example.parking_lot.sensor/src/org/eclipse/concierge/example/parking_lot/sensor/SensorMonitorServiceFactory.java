@@ -2,7 +2,10 @@ package org.eclipse.concierge.example.parking_lot.sensor;
 
 import org.eclipse.concierge.example.parking_lot.sensor.impl.Sensor;
 import org.eclipse.concierge.example.parking_lot.sensor.impl.SensorAdmin;
+import org.eclipse.concierge.example.parking_lot.sensor.monitor.service.SensorMonitorService;
+import org.eclipse.concierge.shell.commands.ShellCommandGroup;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceFactory;
 import org.osgi.framework.ServiceRegistration;
 
@@ -11,7 +14,10 @@ public class SensorMonitorServiceFactory implements ServiceFactory {
 	Sensor sensor;
 	SensorAdmin sensorAdmin;
 	int referenceCounter = 0;
-	
+	BundleContext context;
+	SensorMonitorServiceFactory(BundleContext context){
+		this.context = context;
+	}
     public Object getService(Bundle bundle, ServiceRegistration registration) {
         
     	System.out.println("Sensor Factory Get Service");
@@ -21,6 +27,7 @@ public class SensorMonitorServiceFactory implements ServiceFactory {
     		sensor = new Sensor(5);
     		System.out.println("SensorFatory Did Create Sensor " + sensor);
         	sensorAdmin = new SensorAdmin(sensor);
+        	context.registerService(ShellCommandGroup.class.getName(), sensorAdmin, null);
         	System.out.println("Create object of SensorAdmin for " + bundle.getSymbolicName());
     	} else {
     		System.out.println("Returning created object of SensorAdmin for " + bundle.getSymbolicName());
