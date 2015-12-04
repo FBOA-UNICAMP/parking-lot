@@ -44,7 +44,14 @@ public class Panel implements SensorMonitorServiceMonitorerInterface {
 	}
 	
 	public void stopMonitoringSensor(SensorMonitorService sensor) {
-		System.out.println("Panel stopMonitoringSensor(" + sensor + ")");
+		int id = sensor.getSensorId();
+		System.out.println("Panel stopMonitoringSensor(" + sensor + ") id = " + id);
+		if(sensorStatusLabel.containsKey(id)){
+			System.out.println("Removing label");
+			mainFrame.remove(sensorStatusLabel.get(id));
+			sensorStatusLabel.remove(id);
+			mainFrame.setVisible(true);
+		}
 		sensor.unsetSensorMonitorServiceMonitorer(this);
 	}
 	

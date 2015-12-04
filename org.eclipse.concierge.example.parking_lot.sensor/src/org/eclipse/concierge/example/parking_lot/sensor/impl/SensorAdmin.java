@@ -125,5 +125,10 @@ public class SensorAdmin implements SensorMonitoringInterface, SensorMonitorServ
 			System.out.println("unknown command " + command);
 		}
 	}
+
+	@Override
+	public int getSensorId() {
+		return managedSensor.getId();
+	}
 	
 }
