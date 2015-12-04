@@ -13,25 +13,26 @@ import org.eclipse.concierge.example.parking_lot.sensor.monitor.service.SensorMo
 
 public class Activator implements BundleActivator {
 	
-	SensorMonitorServiceTracker sensorMonitorServiceTracker;
+//	SensorMonitorServiceTracker sensorMonitorServiceTracker;
+	Listener listener;
 	SensorMonitorService sensorMonitorService;
 	DateFormat dateFormat;
-	Panel panel;
+//	Panel panel;
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
-		panel = new Panel();
+//		panel = new Panel();
 		dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		
-		System.out.println("Panel service started. Tracking For SensorMonitorServices.");
+//		System.out.println("Panel service started. Tracking For SensorMonitorServices.");
 		
-		sensorMonitorServiceTracker = new SensorMonitorServiceTracker(context, panel);
-		
-		System.out.println("Oppenning Service Tracker");
-		sensorMonitorServiceTracker.open();
+		//sensorMonitorServiceTracker = new SensorMonitorServiceTracker(context, panel);
+		listener = new Listener(context);
+		context.addServiceListener(listener);
+//		sensorMonitorServiceTracker.open();
         
 	}
 	
@@ -42,7 +43,8 @@ public class Activator implements BundleActivator {
 	public void stop(BundleContext context) throws Exception {
 		System.out.println("Stopping Panel...");
 		
-		sensorMonitorServiceTracker.shutdown();
+//		sensorMonitorServiceTracker.shutdown();
+		listener.shutdown();
 		System.out.println("Panel Stopped");
 	}
 
