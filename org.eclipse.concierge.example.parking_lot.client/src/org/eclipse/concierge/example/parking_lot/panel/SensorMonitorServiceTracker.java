@@ -66,7 +66,7 @@ public class SensorMonitorServiceTracker extends ServiceTracker {
 		} catch (Exception nse) {
 			System.out.println("Shutdown Tracked Serviec Error "+ nse);
 		}
-		
+		panel.shutdown();
 		
 		this.close();
 		
