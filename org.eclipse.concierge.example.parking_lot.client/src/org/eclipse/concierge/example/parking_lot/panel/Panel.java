@@ -12,8 +12,6 @@ import org.eclipse.concierge.example.parking_lot.sensor.state.SensorState;
 
 public class Panel implements SensorMonitorServiceMonitorerInterface {
 	
-	
-	
 	DateFormat dateFormat;
 	private Frame mainFrame;
 	private HashMap<Integer, Label> sensorStatusLabel;
@@ -25,6 +23,7 @@ public class Panel implements SensorMonitorServiceMonitorerInterface {
 	}
 	private void prepareGUI(){
 		mainFrame = new Frame("Sensor Status");
+		mainFrame.setAutoRequestFocus(false);
 		mainFrame.setSize(400,400);
 		mainFrame.setLayout(new GridLayout(0, 5));
 		/*mainFrame.addWindowListener(new WindowAdapter() {
@@ -54,7 +53,7 @@ public class Panel implements SensorMonitorServiceMonitorerInterface {
 	public void sensorMonitorServiceDidUpdate(int sensorId, SensorState status) {
 		Calendar cal = Calendar.getInstance();
 		Label currentLabel;
-		System.out.println(dateFormat.format(cal.getTime()) + ": Sensor[" + sensorId + "]'s status: " + status.toString());
+//		System.out.println(dateFormat.format(cal.getTime()) + ": Sensor[" + sensorId + "]'s status: " + status.toString());
 		if(!sensorStatusLabel.containsKey(sensorId)){
 			currentLabel = new Label("",Label.CENTER);
 			currentLabel.setText("Sensor["+Integer.toString(sensorId)+"]");
@@ -73,6 +72,7 @@ public class Panel implements SensorMonitorServiceMonitorerInterface {
 //				currentLabel.setOpaque(true);
 				break;
 			case UNKNOWN:
+				currentLabel.setBackground(new Color(192,192,192));
 				break;
 		}
 		

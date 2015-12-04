@@ -13,7 +13,7 @@ public class Activator implements BundleActivator {
 	ServiceRegistration sensorMonitorServiceRegistration;
 	 
 	 public void start(BundleContext context) throws Exception {
-		 sensorMonitorServiceFactory = new SensorMonitorServiceFactory();
+		 sensorMonitorServiceFactory = new SensorMonitorServiceFactory(context);
 		 sensorMonitorServiceRegistration = context.registerService(SensorMonitorService.class.getName(), sensorMonitorServiceFactory, null);
 	 }
 	 

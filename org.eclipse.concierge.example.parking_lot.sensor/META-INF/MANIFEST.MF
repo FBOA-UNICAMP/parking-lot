@@ -8,4 +8,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.eclipse.concierge.example.parking_lot.sensor.monitor.service,
  org.eclipse.concierge.example.parking_lot.sensor.maintenance.service,
  org.eclipse.concierge.example.parking_lot.sensor.state
-Import-Package: org.osgi.framework;version="1.3.0"
+Import-Package: org.eclipse.concierge.shell.commands,
+ org.osgi.framework;version="1.3.0"
