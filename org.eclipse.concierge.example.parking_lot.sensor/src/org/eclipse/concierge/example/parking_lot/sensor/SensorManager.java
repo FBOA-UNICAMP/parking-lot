@@ -1,6 +1,7 @@
 package org.eclipse.concierge.example.parking_lot.sensor;
 
 import java.util.Enumeration;
+import java.util.Scanner;
 import java.util.Vector;
 import org.eclipse.concierge.example.parking_lot.api.PanelManagerInterface;
 import org.eclipse.concierge.shell.commands.ShellCommandGroup;
@@ -20,7 +21,9 @@ public class SensorManager implements SensorMonitoringInterface {
 	}
 	
 	private void createSensor(){
-		sensor = new Sensor(1);
+		Scanner reader = new Scanner(System.in);
+		System.out.println("Enter sensor id: ");
+		sensor = new Sensor(reader.nextInt());
 		sensor.setMonitorer(this);
 		this.context.registerService(ShellCommandGroup.class.getName(), sensor, null);
 	}
