@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.eclipse.concierge.example.parking_lot.panel
 Bundle-Version: 0.1.0
 Bundle-Activator: org.eclipse.concierge.example.parking_lot.panel.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.eclipse.concierge.example.parking_lot.sensor.monitor.service,
- org.eclipse.concierge.example.parking_lot.sensor.state,
+Import-Package: ch.ethz.iks.r_osgi;version="1.0.0.RC4",
+ org.eclipse.concierge.example.parking_lot.api,
  org.osgi.framework;version="1.3.0"
+Export-Package: org.eclipse.concierge.example.parking_lot.api

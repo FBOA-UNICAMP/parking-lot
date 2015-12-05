@@ -1,25 +1,56 @@
 package org.eclipse.concierge.example.parking_lot.sensor;
 
+import org.eclipse.concierge.example.parking_lot.api.PanelManagerInterface;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
+import org.osgi.framework.BundleException;
+import org.osgi.framework.ServiceEvent;
+import org.osgi.framework.ServiceListener;
+import org.osgi.framework.ServiceReference;
+import ch.ethz.iks.r_osgi.RemoteOSGiService;
+import ch.ethz.iks.r_osgi.RemoteServiceReference;
+import ch.ethz.iks.r_osgi.URI;
+import java.io.IOException;
 
-import org.eclipse.concierge.example.parking_lot.sensor.monitor.service.SensorMonitorService;
+public class Activator implements BundleActivator, ServiceListener {
+	SensorManager sensorManager;
+	BundleContext context;
+	private static final URI uri = new URI("r-osgi://localhost:9278");
+	RemoteOSGiService remote;
+	public void start(BundleContext context) throws Exception {
+		this.context = context;
+		sensorManager = new SensorManager(context);
+		
+		final ServiceReference rosgiRef = context.getServiceReference(RemoteOSGiService.class.getName());
+		if (rosgiRef == null) { 
+			throw new BundleException("No R-OSGi found"); 
+		} 
+		remote = (RemoteOSGiService) context.getService(rosgiRef);
+		try{
+			remote.connect(uri);
+			final RemoteServiceReference[] srefs =
+					remote.getRemoteServiceReferences(uri, PanelManagerInterface.class.getName(), null);
+			System.out.println("Panel found " + srefs.length + " services on startup");
+			for(int i = 0; i < srefs.length; i++){
+				PanelManagerInterface service = (PanelManagerInterface)remote.getRemoteService(srefs[i]);
+				System.out.println(service);
+				sensorManager.addPanel(service);
+			}
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+        
+	}
+	
+	public void stop(BundleContext context) throws Exception {
+		System.out.println("Stopping Sensor...");
+		sensorManager.shutdown();
+		System.out.println("Sensor Stopped");
+	}
 
-
-public class Activator implements BundleActivator {
-
-	SensorMonitorServiceFactory sensorMonitorServiceFactory;
-	ServiceRegistration sensorMonitorServiceRegistration;
-	 
-	 public void start(BundleContext context) throws Exception {
-		 sensorMonitorServiceFactory = new SensorMonitorServiceFactory(context);
-		 sensorMonitorServiceRegistration = context.registerService(SensorMonitorService.class.getName(), sensorMonitorServiceFactory, null);
-	 }
-	 
-	 public void stop(BundleContext context) throws Exception {
-		 sensorMonitorServiceRegistration.unregister();
-		 sensorMonitorServiceFactory.shutdown();
-	 }	
+	public void serviceChanged(ServiceEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
