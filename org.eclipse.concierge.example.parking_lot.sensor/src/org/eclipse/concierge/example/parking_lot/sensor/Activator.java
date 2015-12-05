@@ -20,20 +20,22 @@ public class Activator implements BundleActivator, ServiceListener {
 	public void start(BundleContext context) throws Exception {
 		this.context = context;
 		sensorManager = new SensorManager(context);
-		
 		final ServiceReference rosgiRef = context.getServiceReference(RemoteOSGiService.class.getName());
 		if (rosgiRef == null) { 
 			throw new BundleException("No R-OSGi found"); 
-		} 
+		}
+		System.out.println("Found R-OSGI reference " + rosgiRef);
 		remote = (RemoteOSGiService) context.getService(rosgiRef);
 		try{
 			remote.connect(uri);
+			System.out.println("Connected to " + uri);
 			final RemoteServiceReference[] srefs =
 					remote.getRemoteServiceReferences(uri, PanelManagerInterface.class.getName(), null);
-			System.out.println("Panel found " + srefs.length + " services on startup");
+			System.out.println("Sensor found " + srefs.length + " services on startup");
 			for(int i = 0; i < srefs.length; i++){
+				System.out.println("Getting service from srefs[" + i+ "]: " + srefs[i]);
 				PanelManagerInterface service = (PanelManagerInterface)remote.getRemoteService(srefs[i]);
-				System.out.println(service);
+				System.out.println("Adding service[" + i+ "]: " + service);
 				sensorManager.addPanel(service);
 			}
 		} catch (IOException ioe) {

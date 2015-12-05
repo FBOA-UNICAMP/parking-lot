@@ -22,6 +22,7 @@ public class PanelManagerImpl implements PanelManagerInterface {
 			pointer.setBackground(getColor(status));
 			sensorStatusLabel.put(id, pointer);
 			panel.addLabel(pointer);
+			System.out.println("Sensor added successfully, returning true");
 			return true;
 		} else {
 			System.out.println("Panel already has sensor[" + id + "]");

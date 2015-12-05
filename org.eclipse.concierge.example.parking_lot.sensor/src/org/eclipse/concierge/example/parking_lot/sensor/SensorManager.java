@@ -15,19 +15,22 @@ public class SensorManager implements SensorMonitoringInterface {
 	
 	public SensorManager(BundleContext context) {
 		this.context = context;
+		panels = new Vector<PanelManagerInterface>();
 		createSensor();
 	}
 	
 	private void createSensor(){
-		Sensor pointer = new Sensor(1);
-		pointer.setMonitorer(this);
-		context.registerService(ShellCommandGroup.class.getName(), sensor, null);
+		sensor = new Sensor(1);
+		sensor.setMonitorer(this);
+		this.context.registerService(ShellCommandGroup.class.getName(), sensor, null);
 	}
 	
 	public void addPanel(PanelManagerInterface panel) {
+		System.out.println("Trying to add sensor["+sensor.getId()+"] to panel " + panel);
 		if(panel.addSensor(sensor.getId(), sensor.getStatus())){
 			panels.add(panel);
 		}
+		System.out.println("Panel successfully added");
 	}
 	
 	public void shutdown() {
