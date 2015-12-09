@@ -715,13 +715,11 @@ final class RemoteOSGiServiceImpl implements RemoteOSGiService, Remoting {
 			test.usageCounter++;
 			return test.getAllRemoteReferences(null);
 		}
-
 		final ChannelEndpointImpl channel;
 		final String protocol = endpoint.getScheme();
-
 		final NetworkChannelFactory factory = getNetworkChannelFactory(protocol);
-		channel = new ChannelEndpointImpl(factory, endpoint);
 
+		channel = new ChannelEndpointImpl(factory, endpoint);
 		return channel.sendLease(getServices(), getTopics());
 	}
 
